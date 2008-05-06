@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page-templates>
+	<page name="XForms Case Application Starter" type="xforms_case_app_starter" iconfile="idegaweb/bundles/org.jboss.jbpm.bundle/resources/images/pageIcons/orbz-machine-16x16.png" templatefile="idegaweb/bundles/is.idega.idegaweb.egov.xformscase.bundle/resources/pages/idega_theme_xforms_case_app_starter.xml"></page>
+</page-templates>
