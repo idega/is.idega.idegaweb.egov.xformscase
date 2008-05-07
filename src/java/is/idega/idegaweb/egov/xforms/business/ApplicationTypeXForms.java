@@ -34,9 +34,9 @@ import com.idega.util.URIUtil;
  * Interface is meant to be extended by beans, reflecting application type for egov applications
  * 
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2008/05/06 17:35:49 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/07 19:10:01 $ by $Author: anton $
  *
  */
 
@@ -96,7 +96,7 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		if(icPage == null)
 			icPage = icpages.iterator().next();
 		
-		String uri = icPage.getWebDavUri();
+		String uri = icPage.getDefaultPageURI();
 		
 		if(!uri.startsWith("/pages"))
 			uri = "/pages"+uri;
