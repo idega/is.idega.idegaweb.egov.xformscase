@@ -18,9 +18,9 @@ import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/05/07 19:10:02 $ by $Author: anton $
+ * Last modified: $Date: 2008/05/16 07:33:32 $ by $Author: alexis $
  */
 public class XFormsCaseViewer extends FormViewer {
 	
@@ -91,7 +91,7 @@ public class XFormsCaseViewer extends FormViewer {
 		super.encodeChildren(context);
 
 		@SuppressWarnings("unchecked")
-		Map<String, UIComponent> facets = (Map<String, UIComponent>)getFacets();
+		Map<Object, UIComponent> facets = (Map<Object, UIComponent>)getFacets();
 		UIComponent viewer = facets.get(VIEWER_FACET);
 		
 		if(viewer != null)
