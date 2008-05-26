@@ -60,7 +60,7 @@ public class UIApplicationTypeXFormsHandler extends CasesBlock implements Applic
 		appTypeXForms.fillMenu(xFormsMenu);
 		
 		SelectorUtility util = new SelectorUtility();
-		DropdownMenu categories = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_CASE_CATEGORY), getBusiness().getCaseCategories(), "getName");
+		DropdownMenu categories = (DropdownMenu) util.getSelectorFromIDOEntities(new DropdownMenu(PARAMETER_CASE_CATEGORY), getCasesBusiness().getCaseCategories(), "getName");
 		categories.setId(PARAMETER_CASE_CATEGORY);
 		categories.keepStatusOnAction(true);
 		categories.setStyleClass("caseCategoryDropdown");
