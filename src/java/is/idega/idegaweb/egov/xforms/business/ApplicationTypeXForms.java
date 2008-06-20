@@ -1,13 +1,14 @@
 package is.idega.idegaweb.egov.xforms.business;
 
-import java.util.Collection;
-import java.util.List;
-
 import is.idega.idegaweb.egov.application.business.ApplicationType;
 import is.idega.idegaweb.egov.application.business.ApplicationTypePluggedInEvent;
 import is.idega.idegaweb.egov.application.data.Application;
 import is.idega.idegaweb.egov.xforms.presentation.UIApplicationTypeXFormsHandler;
 import is.idega.idegaweb.egov.xforms.presentation.XFormsCaseViewer;
+
+import java.rmi.RemoteException;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
+import com.idega.core.builder.business.BuilderService;
+import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.core.builder.data.ICPage;
 import com.idega.core.builder.data.ICPageHome;
 import com.idega.data.IDOLookup;
@@ -34,9 +37,9 @@ import com.idega.util.URIUtil;
  * Interface is meant to be extended by beans, reflecting application type for egov applications
  * 
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  *
- * Last modified: $Date: 2008/05/07 19:10:01 $ by $Author: anton $
+ * Last modified: $Date: 2008/06/20 09:54:44 $ by $Author: civilis $
  *
  */
 
@@ -81,8 +84,9 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		return appType;
 	}
 
-	public String getUrl(IWApplicationContext iwac, Application app) {
+	public String getUrl(IWContext iwc, Application app) {
 		
+		/*
 		Collection<ICPage> icpages = getPages(egovXFormsPageType);
 		
 		ICPage icPage = null;
@@ -100,15 +104,17 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		
 		if(!uri.startsWith("/pages"))
 			uri = "/pages"+uri;
+		*/
+		
+		String uri = getBuilderService(iwc).getFullPageUrlByPageType(iwc, egovXFormsPageType, true);
 		
 		URIUtil uriUtil = new URIUtil(uri);
 		uriUtil.setParameter(XFormsCaseViewer.XFORMS_PROPERTY, String.valueOf(app.getUrl()));
 		uri = uriUtil.getUri();
 		
 //		Integer appId = getAppId(app.getPrimaryKey());
-		System.out.println("URI: " + uri);
 		
-		return iwac.getIWMainApplication().getTranslatedURIWithContext(uri);
+		return iwc.getIWMainApplication().getTranslatedURIWithContext(uri);
 	}
 
 	public void setApplicationContext(ApplicationContext applicationcontext)
@@ -167,12 +173,20 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		return formId;
 	}
 	
-	private Integer getAppId(Object pk) {
-		
-		if(pk instanceof Integer)
-			return (Integer)pk;
-		else
-			return new Integer(pk.toString());
-	}
+//	private Integer getAppId(Object pk) {
+//		
+//		if(pk instanceof Integer)
+//			return (Integer)pk;
+//		else
+//			return new Integer(pk.toString());
+//	}
 
+	protected BuilderService getBuilderService(IWApplicationContext iwac) {
+		
+		try {
+			return BuilderServiceFactory.getBuilderService(iwac);
+		} catch (RemoteException e) {
+			throw new RuntimeException("Failed to resolve builder service", e);
+		}
+	}
 }
