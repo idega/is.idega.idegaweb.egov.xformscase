@@ -1,24 +1,16 @@
 package is.idega.idegaweb.egov.xforms.process;
 
 import is.idega.idegaweb.egov.cases.business.CasesBusiness;
-import is.idega.idegaweb.egov.cases.business.CasesBusinessBean;
-import is.idega.idegaweb.egov.cases.data.GeneralCase;
-import is.idega.idegaweb.egov.cases.data.GeneralCaseHome;
 import is.idega.idegaweb.egov.xforms.data.GeneralXformCase;
-import is.idega.idegaweb.egov.xforms.data.GeneralXformCaseBean;
 import is.idega.idegaweb.egov.xforms.data.GeneralXformCaseHome;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.rmi.RemoteException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import javax.faces.context.FacesContext;
-
-import org.chiba.web.IWBundleStarter;
 import org.chiba.xml.dom.DOMUtil;
 import org.chiba.xml.xforms.connector.AbstractConnector;
 import org.chiba.xml.xforms.connector.SubmissionHandler;
@@ -30,25 +22,19 @@ import org.w3c.dom.Node;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
-import com.idega.chiba.web.xml.xforms.connector.webdav.WebdavSubmissionHandler;
-import com.idega.core.accesscontrol.business.NotLoggedOnException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.idegaweb.IWMainApplication;
-import com.idega.presentation.IWContext;
-import com.idega.presentation.PresentationObject;
 import com.idega.slide.business.IWSlideService;
-import com.idega.user.business.UserBusiness;
-import com.idega.user.data.User;
 
 /**
  * TODO: move all this logic to spring bean
  * 
  * @author <a href="mailto:anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  *
- * Last modified: $Date: 2008/05/06 17:35:49 $ by $Author: anton $
+ * Last modified: $Date: 2008/08/05 10:57:05 $ by $Author: valdas $
  */
 public class XFormsSubmissionHandler extends AbstractConnector implements SubmissionHandler {
 	
@@ -60,9 +46,6 @@ public class XFormsSubmissionHandler extends AbstractConnector implements Submis
     
 	@SuppressWarnings("unchecked")
     public Map submit(Submission submission, Node instance) throws XFormsException {
-		IWContext iwc = IWContext.getInstance();
-		
-		
     	//method - post, replace - none
     	if (!submission.getReplace().equalsIgnoreCase("none"))
             throw new XFormsException("Submission mode '" + submission.getReplace() + "' not supported");
@@ -105,7 +88,7 @@ public class XFormsSubmissionHandler extends AbstractConnector implements Submis
 		Element form_id = DOMUtil.getChildElement(instance, form_id_tag);
 		
         if (form_id != null) {
-        	return DOMUtil.getElementValue((Element) form_id);
+        	return DOMUtil.getElementValue(form_id);
         }
         return null;
 	}
@@ -146,15 +129,6 @@ public class XFormsSubmissionHandler extends AbstractConnector implements Submis
 		}
 		catch (IBOLookupException ile) {
 			throw new IBORuntimeException(ile);
-		}
-	}
-	
-	private User getUser(IWContext iwc) throws RemoteException {
-		try {
-			return iwc.getCurrentUser();
-		}
-		catch (NotLoggedOnException nloe) {
-			return null;
 		}
 	}
 	
