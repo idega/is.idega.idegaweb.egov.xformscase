@@ -1,7 +1,6 @@
 package is.idega.idegaweb.egov.xforms.business;
 
 import is.idega.idegaweb.egov.application.business.ApplicationType;
-import is.idega.idegaweb.egov.application.business.ApplicationTypePluggedInEvent;
 import is.idega.idegaweb.egov.application.data.Application;
 import is.idega.idegaweb.egov.xforms.presentation.UIApplicationTypeXFormsHandler;
 import is.idega.idegaweb.egov.xforms.presentation.XFormsCaseViewer;
@@ -10,14 +9,8 @@ import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Service;
 
 import com.idega.core.builder.business.BuilderService;
@@ -34,20 +27,16 @@ import com.idega.presentation.ui.DropdownMenu;
 import com.idega.util.URIUtil;
 
 /**
- * Interface is meant to be extended by beans, reflecting application type for egov applications
- * 
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/06/20 09:54:44 $ by $Author: civilis $
+ * Last modified: $Date: 2008/09/02 12:58:46 $ by $Author: civilis $
  *
  */
-
-@Service(ApplicationTypeXForms.beanIdentifier)
 @Scope("singleton")
-public class ApplicationTypeXForms implements ApplicationType, ApplicationContextAware, ApplicationListener {
+@Service(ApplicationTypeXForms.beanIdentifier)
+public class ApplicationTypeXForms implements ApplicationType {
 	
-	private ApplicationContext ctx;
 	private PersistenceManager persistenceManager;
 	
 	public static final String beanIdentifier = "appTypeXForms";
@@ -69,6 +58,10 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		
 		app.setUrl(selectedFormId + DELIMITER + caseCategoryId);
 		
+	}
+	
+	public String getBeanIdentifier() {
+		return beanIdentifier;
 	}
 
 	public ApplicationTypeHandlerComponent getHandlerComponent() {		
@@ -117,21 +110,6 @@ public class ApplicationTypeXForms implements ApplicationType, ApplicationContex
 		return iwc.getIWMainApplication().getTranslatedURIWithContext(uri);
 	}
 
-	public void setApplicationContext(ApplicationContext applicationcontext)
-			throws BeansException {
-		ctx = applicationcontext;
-	}
-
-	public void onApplicationEvent(ApplicationEvent applicationevent) {
-		
-		if(applicationevent instanceof ContextRefreshedEvent) {
-			
-			ApplicationTypePluggedInEvent event = new ApplicationTypePluggedInEvent(this);
-			event.setAppTypeBeanIdentifier(beanIdentifier);
-			ctx.publishEvent(event);
-		}
-	}
-	
 	public Collection<ICPage> getPages(String pageSubType) {
 		
 		try {
