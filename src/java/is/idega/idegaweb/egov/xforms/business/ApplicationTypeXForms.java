@@ -28,9 +28,9 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/09/02 12:58:46 $ by $Author: civilis $
+ * Last modified: $Date: 2008/09/03 13:52:05 $ by $Author: civilis $
  *
  */
 @Scope("singleton")
@@ -149,6 +149,10 @@ public class ApplicationTypeXForms implements ApplicationType {
 	public String getSelectedElement(Application app) {
 		String formId = app.getUrl();
 		return formId;
+	}
+	
+	public boolean isVisible(Application app) {
+		return true;
 	}
 	
 //	private Integer getAppId(Object pk) {
