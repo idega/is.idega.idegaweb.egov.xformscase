@@ -18,7 +18,7 @@ import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.core.builder.data.ICPage;
 import com.idega.core.builder.data.ICPageHome;
 import com.idega.data.IDOLookup;
-import com.idega.documentmanager.business.PersistedForm;
+import com.idega.documentmanager.business.Form;
 import com.idega.documentmanager.business.PersistenceManager;
 import com.idega.documentmanager.business.XFormPersistenceType;
 import com.idega.idegaweb.IWApplicationContext;
@@ -28,9 +28,9 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  *
- * Last modified: $Date: 2008/09/03 13:52:05 $ by $Author: civilis $
+ * Last modified: $Date: 2008/10/27 20:24:30 $ by $Author: civilis $
  *
  */
 @Scope("singleton")
@@ -127,10 +127,10 @@ public class ApplicationTypeXForms implements ApplicationType {
 	
 	public void fillMenu(DropdownMenu menu) {
 
-		List<PersistedForm> xforms = getPersistenceManager().getStandaloneForms();
+		List<Form> xforms = getPersistenceManager().getStandaloneForms();
 		
 		if(xforms != null) {
-			for(PersistedForm form : xforms) {
+			for(Form form : xforms) {
 				menu.addMenuElement(String.valueOf(form.getFormId()), form.getDisplayName());
 			}
 		}
