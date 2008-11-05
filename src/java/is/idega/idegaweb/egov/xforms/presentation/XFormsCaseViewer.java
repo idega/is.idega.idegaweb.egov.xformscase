@@ -8,19 +8,14 @@ import java.util.Map;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.idega.block.form.presentation.FormViewer;
-import com.idega.documentmanager.business.Document;
-import com.idega.documentmanager.business.DocumentManagerFactory;
-import com.idega.presentation.IWContext;
-import com.idega.util.CoreConstants;
 
 /**
  * @author <a href="mailto:anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  *
- * Last modified: $Date: 2008/05/16 07:33:32 $ by $Author: alexis $
+ * Last modified: $Date: 2008/11/05 09:01:39 $ by $Author: civilis $
  */
 public class XFormsCaseViewer extends FormViewer {
 	
@@ -73,24 +68,23 @@ public class XFormsCaseViewer extends FormViewer {
 //		facets.remove(VIEWER_FACET);
 	}
 	
-	private void loadFormId(FacesContext context, String formId) {
-		IWContext iwc = IWContext.getIWContext(context);
-		
-		DocumentManagerFactory p = new DocumentManagerFactory();;
-		Document doc = p.newDocumentManager(iwc.getIWMainApplication()).takeForm(Long.parseLong(formId));
-		
-		HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
-		session.setAttribute(XFORMS_PROPERTY, doc.getFormId());
-		
-		setXFormsDocument(doc.getXformsDocument());
-	}
+//	private void loadFormId(FacesContext context, String formId) {
+//		IWContext iwc = IWContext.getIWContext(context);
+//		
+//		DocumentManagerFactory p = new DocumentManagerFactory();;
+//		Document doc = p.newDocumentManager(iwc.getIWMainApplication()).takeForm(Long.parseLong(formId));
+//		
+//		HttpSession session = (HttpSession) context.getExternalContext().getSession(false);
+//		session.setAttribute(XFORMS_PROPERTY, doc.getFormId());
+//		
+//		setXFormsDocument(doc.getXformsDocument());
+//	}
 	
 	@Override
 	public void encodeChildren(FacesContext context) throws IOException {
 		
 		super.encodeChildren(context);
 
-		@SuppressWarnings("unchecked")
 		Map<Object, UIComponent> facets = (Map<Object, UIComponent>)getFacets();
 		UIComponent viewer = facets.get(VIEWER_FACET);
 		

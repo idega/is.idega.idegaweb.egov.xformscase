@@ -18,9 +18,9 @@ import com.idega.core.builder.business.BuilderServiceFactory;
 import com.idega.core.builder.data.ICPage;
 import com.idega.core.builder.data.ICPageHome;
 import com.idega.data.IDOLookup;
-import com.idega.documentmanager.business.Form;
-import com.idega.documentmanager.business.PersistenceManager;
-import com.idega.documentmanager.business.XFormPersistenceType;
+import com.idega.xformsmanager.business.Form;
+import com.idega.xformsmanager.business.PersistenceManager;
+import com.idega.xformsmanager.business.XFormPersistenceType;
 import com.idega.idegaweb.IWApplicationContext;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.ui.DropdownMenu;
@@ -28,9 +28,9 @@ import com.idega.util.URIUtil;
 
 /**
  * @author <a href="anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  *
- * Last modified: $Date: 2008/10/27 20:24:30 $ by $Author: civilis $
+ * Last modified: $Date: 2008/11/05 09:01:31 $ by $Author: civilis $
  *
  */
 @Scope("singleton")
