@@ -13,9 +13,9 @@ import com.idega.block.form.presentation.FormViewer;
 
 /**
  * @author <a href="mailto:anton@idega.com">Anton Makarov</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  *
- * Last modified: $Date: 2008/11/05 09:01:39 $ by $Author: civilis $
+ * Last modified: $Date: 2008/12/13 15:42:03 $ by $Author: civilis $
  */
 public class XFormsCaseViewer extends FormViewer {
 	
@@ -85,7 +85,7 @@ public class XFormsCaseViewer extends FormViewer {
 		
 		super.encodeChildren(context);
 
-		Map<Object, UIComponent> facets = (Map<Object, UIComponent>)getFacets();
+		Map<String, UIComponent> facets = (Map<String, UIComponent>)getFacets();
 		UIComponent viewer = facets.get(VIEWER_FACET);
 		
 		if(viewer != null)
