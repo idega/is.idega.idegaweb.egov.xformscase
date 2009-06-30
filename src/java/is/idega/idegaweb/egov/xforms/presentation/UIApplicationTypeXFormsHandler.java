@@ -1,5 +1,7 @@
 package is.idega.idegaweb.egov.xforms.presentation;
 
+import java.util.Map;
+
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
 import javax.faces.component.html.HtmlMessage;
@@ -170,5 +172,25 @@ public class UIApplicationTypeXFormsHandler extends CasesBlock implements Applic
 			valid = false;
 		}
 		return valid;
+	}
+	
+	@Override
+	public String getCasesProcessorType() {
+		return null;
+	}
+
+	@Override
+	public Map<Object, Object> getUserCasesPageMap() {
+		return null;
+	}
+
+	@Override
+	public boolean showCheckBox() {
+		return false;
+	}
+
+	@Override
+	public boolean showCheckBoxes() {
+		return false;
 	}
 }
