@@ -20,11 +20,11 @@
                   <value>is.idega.idegaweb.egov.xforms.presentation.XFormsCaseViewer.pxml</value>
                 </key>
               </map>
-      		</value>
-      		<type>map</type>
-    	  </key>
-  		</map>
-  		</value>
+            </value>
+            <type>map</type>
+          </key>
+        </map>
+      </value>
       <type>map</type>
     </key>
   </map>
