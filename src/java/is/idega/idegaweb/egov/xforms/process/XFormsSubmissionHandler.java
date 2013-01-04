@@ -11,6 +11,8 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import javax.jcr.RepositoryException;
+
 import org.chiba.xml.dom.DOMUtil;
 import org.chiba.xml.xforms.connector.AbstractConnector;
 import org.chiba.xml.xforms.connector.SubmissionHandler;
@@ -25,104 +27,95 @@ import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOLookup;
 import com.idega.data.IDOLookupException;
 import com.idega.idegaweb.IWApplicationContext;
-import com.idega.idegaweb.IWMainApplication;
-import com.idega.slide.business.IWSlideService;
+import com.idega.repository.RepositoryService;
+import com.idega.util.CoreConstants;
+import com.idega.util.expression.ELUtil;
 
 /**
  * TODO: move all this logic to spring bean
- * 
+ *
  * @author <a href="mailto:anton@idega.com">Anton Makarov</a>
  * @version $Revision: 1.2 $
  *
  * Last modified: $Date: 2008/08/05 10:57:05 $ by $Author: valdas $
  */
 public class XFormsSubmissionHandler extends AbstractConnector implements SubmissionHandler {
-	
+
 	private static final Logger logger = Logger.getLogger(XFormsSubmissionHandler.class.getName());
 	private static final String form_id_tag = "form_id";
-	private static final String slash = "/";
-	
+	private static final String slash = CoreConstants.SLASH;
+
 	public static final String SUBMITTED_DATA_PATH = "/files/forms/submissions";
-    
-	@SuppressWarnings("unchecked")
-    public Map submit(Submission submission, Node instance) throws XFormsException {
+
+    @Override
+	public Map submit(Submission submission, Node instance) throws XFormsException {
     	//method - post, replace - none
     	if (!submission.getReplace().equalsIgnoreCase("none"))
             throw new XFormsException("Submission mode '" + submission.getReplace() + "' not supported");
-    	
+
     	if(!submission.getMethod().equalsIgnoreCase("put") && !submission.getMethod().equalsIgnoreCase("post"))
     		throw new XFormsException("Submission method '" + submission.getMethod() + "' not supported");
-    	
+
     	if(submission.getMethod().equalsIgnoreCase("put")) {
     		//update (put)
     		//currently unsupported
-    		throw new XFormsException("Submission method '" + submission.getMethod() + "' not yet supported");	
-    	} 
-               
+    		throw new XFormsException("Submission method '" + submission.getMethod() + "' not yet supported");
+    	}
+
         try {
             String formId = getFormIdFromSubmissionInstance(instance);
             String location = "";
-            
+
             if(formId != null) {
             	ByteArrayOutputStream out = new ByteArrayOutputStream();
 				serialize(submission, instance, out);
 				InputStream is = new ByteArrayInputStream(out.toByteArray());
 				location = saveSubmittedData(formId, is);
-				
+
 				GeneralXformCase theCase = getGeneralXFormsCaseHome().create();
 				theCase.setXformId(formId);
 				theCase.setXfromLocation(location);
-				
-			
+
+
 //				getCasesBusiness(iwc).storeGeneralCase(theCase, getUser(iwc), caseCategoryPK, caseTypePK, attachmentPK, message, type, caseManagerType, isPrivate, iwrb, sendMessages)
-            }	            
+            }
         }
         catch (Exception e) {
             throw new XFormsException(e);
         }
-    	
+
     	return null;
     }
-	
+
 	protected String getFormIdFromSubmissionInstance(Node instance) {
 		Element form_id = DOMUtil.getChildElement(instance, form_id_tag);
-		
+
         if (form_id != null) {
         	return DOMUtil.getElementValue(form_id);
         }
         return null;
 	}
-	
-	protected String saveSubmittedData(String formId, InputStream is) throws IOException {
-		
-		String path = 
+
+	protected String saveSubmittedData(String formId, InputStream is) throws IOException, RepositoryException {
+
+		String path =
 			new StringBuilder(SUBMITTED_DATA_PATH)
 			.append(slash)
 			.append(formId)
 			.append(slash)
 			.toString()
 		;
-			
+
 		String fileName = System.currentTimeMillis() + ".xml";
-		
+
 		logger.info("Saving submitted instance to webdav path: " + path + fileName);
 
-		IWSlideService service = getIWSlideService();
-		service.uploadFileAndCreateFoldersFromStringAsRoot(path, fileName, is, "text/xml", false);
-		
+		RepositoryService service = ELUtil.getInstance().getBean(RepositoryService.BEAN_NAME);
+		service.uploadFileAndCreateFoldersFromStringAsRoot(path, fileName, is, "text/xml");
+
 		return path + fileName;
 	}
-	
-	protected IWSlideService getIWSlideService() throws IBOLookupException {
-		
-		try {
-			return (IWSlideService) IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(), IWSlideService.class);
-		} catch (IBOLookupException e) {
-			//logger.log(Level.SEVERE, "Error getting IWSlideService");
-			throw e;
-		}
-	}
-	
+
 	protected CasesBusiness getCasesBusiness(IWApplicationContext iwac) {
 		try {
 			return (CasesBusiness) IBOLookup.getServiceInstance(iwac, CasesBusiness.class);
@@ -131,7 +124,7 @@ public class XFormsSubmissionHandler extends AbstractConnector implements Submis
 			throw new IBORuntimeException(ile);
 		}
 	}
-	
+
 	private GeneralXformCaseHome getGeneralXFormsCaseHome() {
 		try {
 			return (GeneralXformCaseHome) IDOLookup.getHome(GeneralXformCase.class);
