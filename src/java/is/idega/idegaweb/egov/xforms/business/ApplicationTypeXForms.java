@@ -1,10 +1,5 @@
 package is.idega.idegaweb.egov.xforms.business;
 
-import is.idega.idegaweb.egov.application.business.ApplicationType;
-import is.idega.idegaweb.egov.application.data.Application;
-import is.idega.idegaweb.egov.xforms.presentation.UIApplicationTypeXFormsHandler;
-import is.idega.idegaweb.egov.xforms.presentation.XFormsCaseViewer;
-
 import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
@@ -27,6 +22,12 @@ import com.idega.util.URIUtil;
 import com.idega.xformsmanager.business.Form;
 import com.idega.xformsmanager.business.PersistenceManager;
 import com.idega.xformsmanager.business.XFormPersistenceType;
+
+import is.idega.idegaweb.egov.application.business.ApplicationType;
+import is.idega.idegaweb.egov.application.data.Application;
+import is.idega.idegaweb.egov.application.model.ApplicationModel;
+import is.idega.idegaweb.egov.xforms.presentation.UIApplicationTypeXFormsHandler;
+import is.idega.idegaweb.egov.xforms.presentation.XFormsCaseViewer;
 
 /**
  * @author <a href="anton@idega.com">Anton Makarov</a>
@@ -129,7 +130,7 @@ public class ApplicationTypeXForms implements ApplicationType {
 	}
 
 	@Override
-	public boolean isVisible(Application app) {
+	public boolean isVisible(ApplicationModel app) {
 		return true;
 	}
 
