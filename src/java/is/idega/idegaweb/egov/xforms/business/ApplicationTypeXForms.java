@@ -85,7 +85,7 @@ public class ApplicationTypeXForms implements ApplicationType {
 	}
 
 	@Override
-	public String getUrl(IWContext iwc, Application app) {
+	public String getUrl(IWContext iwc, ApplicationModel app) {
 		String uri = getBuilderService(iwc).getFullPageUrlByPageType(iwc, egovXFormsPageType, true);
 
 		URIUtil uriUtil = new URIUtil(uri);
