@@ -1,7 +1,9 @@
 package is.idega.idegaweb.egov.xforms.business;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,6 +107,7 @@ public class ApplicationTypeXForms implements ApplicationType {
 		}
 	}
 
+	@Override
 	public void fillMenu(DropdownMenu menu) {
 		List<Form> xforms = getPersistenceManager().getStandaloneForms();
 		if (xforms != null) {
@@ -140,5 +143,20 @@ public class ApplicationTypeXForms implements ApplicationType {
 		} catch (RemoteException e) {
 			throw new RuntimeException("Failed to resolve builder service", e);
 		}
+	}
+
+	@Override
+	public String getSelectedElement(ApplicationModel app) {
+		return CoreConstants.EMPTY;
+	}
+
+	@Override
+	public List<String> getRolesCanStartProcessDWR(String pdId, String applicationId) {
+		return Collections.emptyList();
+	}
+
+	@Override
+	public <T extends Serializable> List<String> getRolesCanStartProcess(T pdId, Object applicationId) {
+		return Collections.emptyList();
 	}
 }
