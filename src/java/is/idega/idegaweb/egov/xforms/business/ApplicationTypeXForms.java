@@ -133,7 +133,7 @@ public class ApplicationTypeXForms implements ApplicationType {
 	}
 
 	@Override
-	public boolean isVisible(ApplicationModel app) {
+	public boolean isVisible(IWContext iwc, ApplicationModel app) {
 		return true;
 	}
 
